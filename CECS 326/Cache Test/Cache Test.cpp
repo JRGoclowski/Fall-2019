@@ -2,19 +2,32 @@
 //
 
 #include <iostream>
+#include <memory>
 #include "Document.h"
+#include "FileArray.h"
+#include "recent_list.h"
+#include "DocLibrary.h"
 
 using namespace std;
 
 //BE SURE TO INCLUDE AN ARRAY OF CHAR VECTOR
 int main()
 {
-    std::cout << "Hello World!\n"; 
-	Document docTest = Document();
-	std::cout << string(docTest) << docTest.getCharCount() << endl << endl << endl;
-	docTest.Reinitialize();
-	std::cout << string(docTest) << docTest.getCharCount() << endl;
-	
+	FileArray mainFiles = FileArray();
+	cout << "Created Docs" << endl;
+	DocLibrary primaryLibrary = DocLibrary();
+	cout << "Created Library" << endl;
+	recent_list recentList = recent_list();
+	cout << "Created Recent List" << endl;
+	int i = 0;
+	for (i; i < 1024; ++i) {
+		primaryLibrary.AddDocument(mainFiles.GetDocPointer(i));
+	}
+	cout << "Filled Library" << endl;
+	for (i; i < 1152; ++i) {
+		recentList.InsertDocument(mainFiles.GetDocPointer(i));
+	}
+	cout << "Filled Recent List";
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

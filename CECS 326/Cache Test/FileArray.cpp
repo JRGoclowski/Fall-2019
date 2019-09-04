@@ -8,19 +8,19 @@ FileArray::FileArray()
 	}
 }
 
-const Document& FileArray::GetDocAddress(Document& pDocAdr)
+Document* FileArray::GetDocPointer(Document& pDocAdr)
 {
 	auto arrayItr = mDocumentArray.begin();
 	auto arrayEnd = mDocumentArray.end();
 	while (arrayItr != arrayEnd) {
 		if (&(*arrayItr) == &(pDocAdr)) {
-			return *arrayItr;
+			return &(*arrayItr);
 		}
 		++arrayItr;
 	}
 }
 
-const Document& FileArray::GetDocAddress(int pInt)
+Document* FileArray::GetDocPointer(int pInt)
 {
-	return mDocumentArray[pInt];
+	return &mDocumentArray[pInt];
 }

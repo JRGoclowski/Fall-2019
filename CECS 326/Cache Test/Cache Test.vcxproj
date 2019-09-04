@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -155,10 +155,12 @@
     <ClCompile Include="Document.cpp" />
     <ClCompile Include="FileArray.cpp" />
     <ClCompile Include="recent_list.cpp" />
+    <ClCompile Include="DocLibrary.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileArray.h" />
     <ClInclude Include="Document.h" />
+    <ClInclude Include="DocLibrary.h" />
     <ClInclude Include="recent_list.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

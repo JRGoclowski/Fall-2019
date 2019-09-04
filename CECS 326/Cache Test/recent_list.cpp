@@ -5,52 +5,28 @@ recent_list::recent_list() : mRecents()
 {
 }
 
-const Document& recent_list::SearchFor(std::string& pTerm)
+bool recent_list::SearchFor(std::string& docString, std::string& pTerm)
 {
-	for (Document* currDoc : mRecents) {
-		std::string* currString = &(currDoc->GetFullString());
+	auto stringWalker = docString.find(pTerm);
+	if (stringWalker != std::string::npos) {
+		return true;
 	}
+	return false;
 }
 
-Document* recent_list::SearchFor(std::vector<char> pTerm)
-{
-	auto termStart = pTerm.begin();
-	auto termEnd = pTerm.end();
-	for (Document* currDoc : mRecentDocs) {
-		auto stringItr = currDoc->GetFullString().begin();
-		auto stringEnd = currDoc->GetFullString().end();
-		auto termWalker = termStart;
-		while (stringItr != stringEnd) {
-			if ((*stringItr) == (*termWalker)) {
-				termWalker++;
-				if (termWalker == termEnd) {
-					return currDoc;
-				}
-			}
-			else {
-				termWalker = termStart;
-			}
-			stringItr++;
-		}
-	}
-	return nullptr;
-}
 
-Document recent_list::EjectDocument(Document& pDoc)
+Document* recent_list::EjectDocument(Document& pDoc)
 {
-	auto docItr = mDocumentList.begin();
+	auto docItr = mRecents.begin();
 	auto docex = *docItr;
-	while (&(*docItr) != &pDoc) {
+	while ((*docItr) != &(pDoc)) {
 		docItr++;
-		if (docItr == mDocumentList.end()){
-			return;
-		}
-
 	}
+	mRecents.remove(*docItr);
+	return *docItr;
 }
 
-void recent_list::InsertDocument(Document& pDoc)
+void recent_list::InsertDocument(Document* pDoc)
 {
-	mDocumentList.push_back(pDoc);
-	mRecentDocs.push_back(&pDoc);
+	mRecents.push_back(pDoc);
 }

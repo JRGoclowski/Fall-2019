@@ -12,7 +12,7 @@ private:
 public:
 	FileArray();
 
-	const Document& GetDocAddress(Document&);
+	Document* GetDocPointer(Document&);
 
-	const Document& GetDocAddress(int);
+	Document* GetDocPointer(int);
 };

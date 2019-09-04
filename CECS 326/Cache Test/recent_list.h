@@ -11,9 +11,9 @@ private:
 public: 
 	recent_list();
 
-	const Document& SearchFor(std::string& pTerm);
+	bool SearchFor(std::string& docString, std::string& pTerm);
 
 	Document* EjectDocument(Document& pDoc);
 
-	void InsertDocument(Document& pDoc);
+	void InsertDocument(Document* pDoc);
 };
