@@ -1,11 +1,12 @@
 #pragma once
 #include <array>
 #include <vector>
+#include <string>
 
 struct Document {
 private:
 	int mCharCount;
-	std::vector <char> mFullString;
+	std::string mFullString;
 	
 
 public:
@@ -14,7 +15,5 @@ public:
 
 	void Reinitialize();
 
-	std::vector<char>& GetFullString();
-
-	operator std::string() const;
+	std::string& GetFullString();
 };

@@ -153,10 +153,11 @@
   <ItemGroup>
     <ClCompile Include="Cache Test.cpp" />
     <ClCompile Include="Document.cpp" />
+    <ClCompile Include="FileArray.cpp" />
     <ClCompile Include="recent_list.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DocLibrary.h" />
+    <ClInclude Include="FileArray.h" />
     <ClInclude Include="Document.h" />
     <ClInclude Include="recent_list.h" />
   </ItemGroup>

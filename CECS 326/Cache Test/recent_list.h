@@ -2,19 +2,18 @@
 #include <array>
 #include "Document.h"
 #include <list>
+#include <string>
 
 struct recent_list {
 private:
-	std::vector <Document*> mRecentDocs;
-	
-	std::list <Document> mDocumentList;
+	std::list <Document*> mRecents;
 
 public: 
 	recent_list();
 
-	Document* SearchFor(std::vector<char> pTerm);
+	const Document& SearchFor(std::string& pTerm);
 
-	Document EjectDocument(Document& pDoc);
+	Document* EjectDocument(Document& pDoc);
 
 	void InsertDocument(Document& pDoc);
 };

@@ -24,15 +24,18 @@
     <ClCompile Include="recent_list.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FileArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="recent_list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DocLibrary.h">
+    <ClInclude Include="Document.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Document.h">
+    <ClInclude Include="FileArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

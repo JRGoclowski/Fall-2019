@@ -1,15 +1,15 @@
 #include "recent_list.h"
 
-recent_list::recent_list()
-{
-	for (int i = 0; i < 128; ++i) {
-		auto docAddition = Document();
-		mDocumentList.push_back(docAddition);
-	}
-	for (Document currDoc : mDocumentList) {
-		mRecentDocs.push_back(&currDoc);
-	}
 
+recent_list::recent_list() : mRecents()
+{
+}
+
+const Document& recent_list::SearchFor(std::string& pTerm)
+{
+	for (Document* currDoc : mRecents) {
+		std::string* currString = &(currDoc->GetFullString());
+	}
 }
 
 Document* recent_list::SearchFor(std::vector<char> pTerm)
