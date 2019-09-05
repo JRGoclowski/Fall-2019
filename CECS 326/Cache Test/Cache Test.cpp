@@ -42,17 +42,36 @@ int main()
 			cout << i << ". " << wordOptions[i] << endl;
 		}
 		int userInput;
-		cout << "Please enter choice: ";
+		cout << "Please enter choice, or 16 to exit: ";
 		cin >> userInput;
-		vector<Document*> docsToBeDeleted = vector<Document* >();
-		for (Document* currDoc : recentList.mRecents) {
-			if (recentList.SearchFor(currDoc->GetFullString, wordOptions[i])) {
-				docsToBeDeleted.push_back(currDoc);
+		if (userInput != 16) {
+			vector<Document*> docsToBeDeleted = vector<Document* >();
+			for (Document* currDoc : recentList.mRecents) {
+				if (recentList.SearchFor(currDoc->GetFullString(), wordOptions[i])) {
+					docsToBeDeleted.push_back(currDoc);
+				}
+			}
+			auto docWalker = docsToBeDeleted.begin();
+			while (docWalker != docsToBeDeleted.end()){
+				primaryLibrary.AddDocument(recentList.EjectDocument(*docWalker));
+				(*docWalker)->Reinitialize();
+			}
+			int docsEjected = docsToBeDeleted.size();
+			cout << wordOptions[i] << ": " << docsEjected << "Ejected";
+			if (docsEjected != 0) {
+				cout << " and reinitialized";
+			}
+			cout << endl;
+			for (int i = 0; i < docsEjected; ++i) {
+				recentList.InsertDocument(primaryLibrary.DequeueFront());
 			}
 		}
-		
+		else
+		{
+			continueRunning = false;
+		}
 	}
-	
+	cout << "GoodBye!";
 
 	
 

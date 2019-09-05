@@ -27,6 +27,12 @@
     <ClCompile Include="FileArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DocLibrary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="recent_list.h">
@@ -36,6 +42,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DocLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
