@@ -1,3 +1,5 @@
-﻿  FileArray.cpp
+﻿  Cache Test.cpp
+  FileArray.cpp
+  Generating Code...
 C:\Users\Jonathan\Documents\GitHub\Fall-2019\CECS 326\Cache Test\FileArray.cpp(21): warning C4715: 'FileArray::GetDocPointer': not all control paths return a value
   Cache Test.vcxproj -> C:\Users\Jonathan\Documents\GitHub\Fall-2019\CECS 326\Cache Test\x64\Debug\Cache Test.exe

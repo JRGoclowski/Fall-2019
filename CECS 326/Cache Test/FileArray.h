@@ -7,7 +7,7 @@
 
 class FileArray {
 private:
-	std::array <Document, 1152> mDocumentArray;
+	std::array <Document, 36> mDocumentArray;
 
 public:
 	FileArray();

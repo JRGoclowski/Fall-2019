@@ -5,11 +5,12 @@
 #include <string>
 
 struct recent_list {
-private:
-	std::list <Document*> mRecents;
+
 
 public: 
 	recent_list();
+
+	std::list <Document*> mRecents;
 
 	bool SearchFor(std::string& docString, std::string& pTerm);
 

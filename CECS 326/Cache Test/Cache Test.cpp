@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
+
 #include "Document.h"
 #include "FileArray.h"
 #include "recent_list.h"
@@ -13,6 +15,8 @@ using namespace std;
 //BE SURE TO INCLUDE AN ARRAY OF CHAR VECTOR
 int main()
 {
+	array <string, 15> wordOptions = { "FIRST", "CPP", "REVIEW", "PROGRAM", "ASSIGNMENT",
+		"CECS", "BEACH", "ECS", "FALL", "SPRING", "OS", "MAC", "LINUX", "WINDOWS", "LAB" };
 	FileArray mainFiles = FileArray();
 	cout << "Created Docs" << endl;
 	DocLibrary primaryLibrary = DocLibrary();
@@ -20,14 +24,38 @@ int main()
 	recent_list recentList = recent_list();
 	cout << "Created Recent List" << endl;
 	int i = 0;
-	for (i; i < 1024; ++i) {
+	for (i; i < 32; ++i) {
 		primaryLibrary.AddDocument(mainFiles.GetDocPointer(i));
+		cout << "Added library pointer " << i << endl;
 	}
 	cout << "Filled Library" << endl;
-	for (i; i < 1152; ++i) {
+	for (i; i < 4; ++i) {
 		recentList.InsertDocument(mainFiles.GetDocPointer(i));
+		cout << "Added recent list pointer " << i << endl;
 	}
-	cout << "Filled Recent List";
+	cout << "Filled Recent List" << endl;
+	bool continueRunning = true;
+	while (continueRunning);
+	{
+		cout << "Which word would you like to search : " << endl;
+		for (int i = 0; i < 15; ++i) {
+			cout << i << ". " << wordOptions[i] << endl;
+		}
+		int userInput;
+		cout << "Please enter choice: ";
+		cin >> userInput;
+		vector<Document*> docsToBeDeleted = vector<Document* >();
+		for (Document* currDoc : recentList.mRecents) {
+			if (recentList.SearchFor(currDoc->GetFullString, wordOptions[i])) {
+				docsToBeDeleted.push_back(currDoc);
+			}
+		}
+		
+	}
+	
+
+	
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
