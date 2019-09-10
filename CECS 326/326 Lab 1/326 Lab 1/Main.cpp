@@ -30,15 +30,21 @@ bool SearchFor(std::string* docString, std::string& pTerm)
 	auto termWalker = pTerm.begin();
 	auto termEnd = pTerm.end();
 	auto stringWalker = docString->begin();
+	int continuousCount = 0;
 	while (stringWalker != docString->end()) {
 		if ((*stringWalker) == (*termWalker)) {
 			++termWalker;
+			++continuousCount;
 			if (termWalker == termEnd) {
 				return true;
 			}
 		}
 		else {
 			termWalker = termStart;
+			for (int i = 0; i < continuousCount; ++i) {
+				--stringWalker;
+			}
+			continuousCount = 0;
 		}
 		++stringWalker;
 	}
@@ -76,7 +82,7 @@ int main()
 			stringAddition += 'A' + rand() % 26;
 		}
 		mDocuments[i] = stringAddition;
-		//cout << i << endl;//Debug function
+		cout << i << endl;//Debug function
 	}
 
 	array <string, 15> wordOptions = { "FIRST", "CPP", "REVIEW", "PROGRAM", "ASSIGNMENT",
@@ -110,7 +116,7 @@ int main()
 			cout << "Searching for " << wordOptions[userInput] << endl;
 			vector<string*> docsToBeDeleted = vector<string* >(); //Keeps track of docs found to not have term
 			for (string* currDoc : recent_list) {
-				if (SearchFor(currDoc, wordOptions[userInput])) {
+				if (!SearchFor(currDoc, wordOptions[userInput])) {
 					docsToBeDeleted.push_back(currDoc);
 				}
 			}
