@@ -8,6 +8,7 @@
 using namespace std;
 
 //Walks through the string, changing each letter
+//string* pString - The string to be changed character by character
 void Reinitialize(std::string* pString)
 {
 	auto currChar = pString->begin();
@@ -20,6 +21,9 @@ void Reinitialize(std::string* pString)
 //Walks through the string, comparing whenever the walker matches the first letter of the term,
 //and then checks if the following characters also match by walking the term walker along with
 //the string walker
+//string* docString - The string in the document to be searched
+//string & pTerm - The term being searched for
+// bool - Returns whether or not the doc string contains the term
 bool SearchFor(std::string* docString, std::string& pTerm)
 {
 	auto termStart = pTerm.begin();
@@ -44,6 +48,9 @@ bool SearchFor(std::string* docString, std::string& pTerm)
 //Goes through each document in the recent list until the document to be ejected is found
 //Upon finding the document, pushes a pointer to the end of the library, and removes it 
 //from the recent list
+//string* pString - The string of the document to be ejected
+//vector<string*>& pLibrary - the library of files to get from
+//vector<string*>& pRecents - the list of recent files to go through
 void EjectDocument(string* pString, vector<string*>& pLibrary, vector<string*>& pRecents)
 {
 	auto docItr = pRecents.begin();
