@@ -3,9 +3,11 @@
 #include <vector>
 #include <array>
 #include <list>
+#include <string>
 
 using namespace std;
 
+//Walks through the string, changing each letter
 void Reinitialize(std::string* pString)
 {
 	auto currChar = pString->begin();
@@ -15,30 +17,51 @@ void Reinitialize(std::string* pString)
 	}
 }
 
+//Walks through the string, comparing whenever the walker matches the first letter of the term,
+//and then checks if the following characters also match by walking the term walker along with
+//the string walker
 bool SearchFor(std::string* docString, std::string& pTerm)
 {
-	auto stringWalker = docString->find(pTerm);
-	if (stringWalker != std::string::npos) {
-		return true;
+	auto termStart = pTerm.begin();
+	auto termWalker = pTerm.begin();
+	auto termEnd = pTerm.end();
+	auto stringWalker = docString->begin();
+	while (stringWalker != docString->end()) {
+		if ((*stringWalker) == (*termWalker)) {
+			++termWalker;
+			if (termWalker == termEnd) {
+				return true;
+			}
+		}
+		else {
+			termWalker = termStart;
+		}
+		++stringWalker;
 	}
 	return false;
 }
 
-
-string* EjectDocument(string* pString, vector<string*> pRecents)
+//Goes through each document in the recent list until the document to be ejected is found
+//Upon finding the document, pushes a pointer to the end of the library, and removes it 
+//from the recent list
+void EjectDocument(string* pString, vector<string*>& pLibrary, vector<string*>& pRecents)
 {
 	auto docItr = pRecents.begin();
-	while (&(*docItr) != &(pString)) {
+	int count = 0;
+	while (*docItr != pString) {
 		docItr++;
+		count++;
 	}
+	pLibrary.push_back(*docItr);
 	pRecents.erase(docItr);
-	return *docItr;
+	return;
 }
 
 int main()
 {
 	array <string, 1152> mDocuments;
 	string stringAddition;
+	//Instantiate all documents
 	for (int i = 0; i < mDocuments.size(); ++i) {
 		stringAddition = "";
 		long stringLength = rand() % 1048576 + 2097152;
@@ -46,52 +69,62 @@ int main()
 			stringAddition += 'A' + rand() % 26;
 		}
 		mDocuments[i] = stringAddition;
-		cout << i << endl;
+		//cout << i << endl;//Debug function
 	}
+
 	array <string, 15> wordOptions = { "FIRST", "CPP", "REVIEW", "PROGRAM", "ASSIGNMENT",
 		"CECS", "BEACH", "ECS", "FALL", "SPRING", "OS", "MAC", "LINUX", "WINDOWS", "LAB" };
-	list<string*> primaryLibrary = list<string*>();
+
+	//Instantiate the library
+	vector<string*> primaryLibrary = vector<string*>();
 	for (int i = 0; i < 1024; ++i) {
 		primaryLibrary.push_back(&mDocuments[i]);
 	}
+
+	//Instantiate the recent list
 	vector<string*> recent_list = vector <string*>();
 	for (int i = 1024; i < mDocuments.size(); ++i) {
 		recent_list.push_back(&mDocuments[i]);
 	}
-	int i = 0;
+
+	//Primary Function Loop
 	bool continueRunning = true;
-	while (continueRunning);
-	{
+	while (continueRunning)	{
+		//Standard user input prompt
 		cout << "Which word would you like to search : " << endl;
 		for (int i = 1; i < 16; ++i) {
-			cout << i << ". " << wordOptions[i] << endl;
+			cout << i << ". " << wordOptions[(i-1)] << endl;
 		}
 		int userInput;
 		cout << "Please enter choice, or 16 to exit: ";
 		cin >> userInput;
 		if (userInput != 16) {
-			userInput - 1;
-			vector<string*> docsToBeDeleted = vector<string* >();
+			--userInput; //Decrease to have user input match array index
+			cout << "Searching for " << wordOptions[userInput] << endl;
+			vector<string*> docsToBeDeleted = vector<string* >(); //Keeps track of docs found to not have term
 			for (string* currDoc : recent_list) {
-				if (SearchFor(currDoc, wordOptions[i])) {
+				if (SearchFor(currDoc, wordOptions[userInput])) {
 					docsToBeDeleted.push_back(currDoc);
 				}
 			}
+			//Walks through recent list and finds each document that does not have the term, and ejects and reinitializes it
 			auto docWalker = docsToBeDeleted.begin();
-			while (docWalker != docsToBeDeleted.end()) {
-				primaryLibrary.push_back(EjectDocument(*docWalker, recent_list));
+			while (docWalker != docsToBeDeleted.end() && !docsToBeDeleted.empty()) {
+				EjectDocument(*docWalker, primaryLibrary, recent_list);
 				Reinitialize(*docWalker);
+				docWalker++;
 			}
 			int docsEjected = docsToBeDeleted.size();
-			cout << wordOptions[i] << ": " << docsEjected << "Ejected";
+			cout << wordOptions[userInput] << ": " << docsEjected << " Ejected";
 			if (docsEjected != 0) {
 				cout << " and reinitialized";
 			}
 			cout << endl;
+			//Refills the recent list
 			for (int i = 0; i < docsEjected; ++i) {
 				auto libFront = primaryLibrary.begin();
 				recent_list.push_back(*libFront);
-				primaryLibrary.remove(*libFront);
+				primaryLibrary.erase(libFront);
 			}
 		}
 		else

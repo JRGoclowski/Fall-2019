@@ -1,0 +1,16 @@
+SELECT * FROM customers;
+
+SELECT productName, productLine FROM products;
+ 
+SELECT productName FROM products WHERE productline = 'Motorcycles';
+ 
+SELECT productVendor FROM products WHERE productName = '1968 Ford Mustang';
+
+SELECT orderNumber, status FROM orders WHERE status = 'Resolved' OR status = 'Cancelled';
+ 
+SELECT ordernumber, shippeddate 
+     FROM orders 
+     WHERE status = 'Shipped' and shippedDate > requiredDate;
+ 
+SELECT productName, quantityinstock FROM products WHERE buyPrice > msrp;
+

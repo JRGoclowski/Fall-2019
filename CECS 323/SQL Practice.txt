@@ -1,0 +1,19 @@
+SELECT contactFirstName, contactLastName, creditLimit FROM customers WHERE creditLimit > 50000;
+
+SELECT * FROM customers WHERE creditLimit = 0;
+
+SELECT * FROM offices WHERE country != 'USA';
+
+SELECT * FROM orders WHERE orderDate BETWEEN '2014-06-16' AND '2014-07-07';
+
+SELECT * FROM products WHERE quantityInStock < 1000;
+
+SELECT * FROM orders WHERE shippedDate > requiredDate;
+
+SELECT * from customers WHERE customerName LIKE '%Mini%';
+
+SELECT * from products WHERE productVendor = 'Highway 66 Mini Classics';
+
+SELECT * FROM products WHERE productVendor != 'Highway 66 Mini Classics';
+
+SELECT * FROM employees WHERE reportsTo IS NULL; 
