@@ -11,20 +11,32 @@ def ExpfPDF(beta, x):
     return f
 
 def NormfPDF(mu, sigma, x):
-    f = (np.exp(-(x-mu)**2)/(2*sigma**2))/(sigma*np.sqrt(2*np.pi)))*np.ones(np.size(x)))
+    f = ((np.exp(-(x-mu)**2)/(2*sigma**2))/(sigma*np.sqrt(2*np.pi)))*np.ones(np.size(x))
     return f
 
+def gaussian(mu,sig,z):
+    f=np.exp(-(z-mu)**2/(2*sig**2))/(sig*np.sqrt(2*np.pi))
+    return f
+
+def BatteryProbability (beta, years):
+    firstValue = (1/beta)
+    secondValue = np.exp((-firstValue) * (years))
+    return firstValue*secondValue
+
+def BatteryPDF(beta, years, x):
+    
+    return BatteryProbability (beta, years) * np.ones(np.size(x))
+    
 
 
-## 1. Simulate continuous random variables with selected distributions
+def CLTstdDev(sigmaSum, n):
+    return (sigmaSum / np.sqrt(n))
 
-# The following code provides a way to create the bar graph of a
-# uniform probability distribution in the interval [a,b)
-# where  a=1, b=3.
-# The code generates n=10000 values of the random variable.
-# This is only a sample code. Your project has different values
-# of a and b. You must use the correct values for
 """
+###########################################################################
+### 1. Simulate continuous random variables with selected distributions ###
+###########################################################################
+
 #################################################################
 ##### Part 1.1 - Uniform Random Variable (a = 2.0, b = 5.0) #####
 #################################################################
@@ -53,7 +65,7 @@ fig1=plt.figure(1)
 plt.bar(b1,h1, width=barwidth, edgecolor=edgecolor)
 
 #PLOT THE UNIFORM PDF
-f=UnifPDF(1,3,b1)
+f=UnifPDF(a,b,b1)
 
 plt.plot(b1,f,'r')
 plt.title('Uniform Random Variable: PDF - Experiment Results',fontsize=14,fontweight='bold')
@@ -62,10 +74,15 @@ plt.ylabel('Probability',fontsize=14)
 plt.show()
 
 #CALCULATE THE MEAN AND STANDARD DEVIATION
-mu_x=np.mean(x)
-sig_x=np.std(x)
+mu_x = np.mean(x)
+sig_x = np.std(x)
+
+Thrtcl_mu_x = (a + b)/ 2
+Thrtcl_sig_x = np.sqrt((b - a) ** 2 / 12)
+
 print ("Uniform")
 print ("Mean: " + str(mu_x) + "\nStandard deviation: " + str(sig_x))
+print ("T. Mean: " + str(Thrtcl_mu_x) + "\nT. Standard deviation: " + str(Thrtcl_sig_x))
 
 ##############################################################################
 ##### Part 1.2 - Exponentially distributed Random Variable (beta = 0.33) #####
@@ -79,7 +96,7 @@ y=np.random.exponential(beta, n)
 # Create bins and histogram
 nbins=2 # Number of bins
 edgecolor='w' # Color separating bars in the bargraph
-bins=[float(y) for y in np.linspace(beta,nbins+1)]
+bins=[float(y) for y in np.linspace(0,nbins+1)]
 h1, bin_edges = np.histogram(y,bins,density=True)
 
 # Define points on the horizontal axis
@@ -94,7 +111,7 @@ fig1=plt.figure(1)
 plt.bar(b1,h1, width=barwidth, edgecolor=edgecolor)
 
 #PLOT THE UNIFORM PDF
-f=ExpfPDF(beta,b1)
+f=ExpfPDF(beta, b1)
 
 plt.plot(b1,f,'r')
 plt.title('Exponential Distributed Random Variable: PDF - Experiment Results',fontsize=14,fontweight='bold')
@@ -107,10 +124,10 @@ mu_y=np.mean(y)
 sig_y=np.std(y)
 print ("Exponential")
 print ("Mean: " + str(mu_y) + "\nStandard deviation: " + str(sig_y))
-"""
-########################################################
-##### Part 1.3 - Normal Random Variable (mu = 2.5, sigma = 0.75) #####
-########################################################
+
+##################################################################
+### Part 1.3 - Normal Random Variable (mu = 2.5, sigma = 0.75) ###
+##################################################################
 
 # Generate the values of the RV X
 mu = 2.5
@@ -119,9 +136,9 @@ n=10000
 z=np.random.normal(mu,sigma,n)
 
 # Create bins and histogram
-nbins=30 # Number of bins
+nbins=5 # Number of bins
 edgecolor='w' # Color separating bars in the bargraph
-bins=[float(z) for z in np.linspace(sigma, mu, nbins+1)]
+bins=[float(z) for z in np.linspace(0, nbins+1)]
 h1, bin_edges = np.histogram(z,bins,density=True)
 
 # Define points on the horizontal axis
@@ -150,47 +167,96 @@ sig_z=np.std(z)
 print ("Normal")
 print ("Mean: " + str(mu_z) + "\nStandard deviation: " + str(sig_z))
 
-"""
 
-### 2. The Central Limit Theorem
+#############################################################
+### 2. The Central Limit Theorem (a = 2.0 cm, b = 5.0 cm) ###
+#############################################################
 
-#The code provides a way to create the bar graph at the end
-# for n=2 and a=1, b=3
-# This is only a sample code. Your project has different values
-# of a and b. You must use the correct values for your project
-# Generate the values of the RV X
 N=100000
-nbooks=2
-a=1
-b=3
+nbooks= 15
+
+a= 2.0
+b= 5.0
+
 mu_x=(a+b)/2
-sig_x=np.sqrt((b-a)**2/12)
+sig_x= np.sqrt((b-a)**2/12)
+
 X=np.zeros((N,1))
-for k in range(0,N):
-    x=np.random.uniform(a,b,nbooks)
-    w=np.sum(x)
-    X[k]=w
+
+for index in range(0,N):
+    booksW = np.random.uniform(a,b,nbooks)
+    stackSum= np.sum(booksW)
+    X[index]= stackSum
+
 # Create bins and histogram
 nbins=30 # Number of bins
 edgecolor='w' # Color separating bars in the bargraph
 bins=[float(x) for x in np.linspace(nbooks*a, nbooks*b,nbins+1)]
 h1, bin_edges = np.histogram(X,bins,density=True)
+
 # Define points on the horizontal axis
 be1=bin_edges[0:np.size(bin_edges)-1]
 be2=bin_edges[1:np.size(bin_edges)]
 b1=(be1+be2)/2
 barwidth=b1[1]-b1[0] # Width of bars in the bargraph
 plt.close('all')
+
 # PLOT THE BAR GRAPH
 fig1=plt.figure(1)
 plt.bar(b1,h1, width=barwidth, edgecolor=edgecolor)
+plt.title('Central Limit Theorom: PDF - Experiment Results',fontsize=14,fontweight='bold')
+plt.xlabel('Stack width in n = ' + str(nbooks) +  ' books',fontsize=14)
+plt.ylabel('Probability',fontsize=14)
+
 #PLOT THE GAUSSIAN FUNCTION
-def gaussian(mu,sig,z):
-    f=np.exp(-(z-mu)**2/(2*sig**2))/(sig*np.sqrt(2*np.pi))
-    return f
 f=gaussian(mu_x*nbooks,sig_x*np.sqrt(nbooks),b1)
-plt.plot(b1,f,'r') 
-
-
-### 3. Distribution of the Sum of Exponential RVs
+plt.plot(b1,f,'r')
+plt.show()
 """
+
+################################################################################
+### 3. Distribution of the Sum of Exponential RVs                            ###
+###   (beta = 50 days, n = 30 batteries, Y1 = 3 yrs, Y2 = 2 yrs, Y3 = 4 yrs) ###
+################################################################################
+
+beta = 50
+n = 30
+repeatCount = 10000
+Y1 = 3
+Y2 = 2
+Y3 = 4
+mu = beta
+sigma = beta
+batteryLog = np.zeros((repeatCount, 1))
+
+for index in range (0,repeatCount):
+    
+    carton = np.random.exponential(beta, n)
+    batteryLog[index] = (sum(carton)/365)
+
+# Create bins and histogram
+nbins=30 # Number of bins
+edgecolor='w' # Color separating bars in the bargraph
+bins=[float(a) for a in np.linspace(0, nbins+1)]
+h1, bin_edges = np.histogram(batteryLog,bins,density=True)
+
+# Define points on the horizontal axis
+be1=bin_edges[0:np.size(bin_edges)-1]
+be2=bin_edges[1:np.size(bin_edges)]
+b1=(be1+be2)/2
+barwidth=b1[1]-b1[0] # Width of bars in the bargraph
+plt.close('all')
+
+# PLOT THE BAR GRAPH
+fig1=plt.figure(1)
+plt.bar(b1,h1, width=barwidth, edgecolor=edgecolor)
+plt.title('Central Limit Theorom: PDF - Experiment Results',fontsize=14,fontweight='bold')
+#plt.xlabel('Stack width in n = ' + str(nbooks) +  ' books',fontsize=14)
+plt.ylabel('Probability',fontsize=14)
+
+#PLOT THE GAUSSIAN FUNCTION
+f=BatteryPDF(beta, n, batteryLog)
+plt.plot(b1,f,'r')
+plt.show()
+
+
