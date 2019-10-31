@@ -11,7 +11,8 @@ def ExpfPDF(beta, x):
     return f
 
 def NormfPDF(mu, sigma, x):
-    f = ((np.exp(-(x-mu)**2)/(2*sigma**2))/(sigma*np.sqrt(2*np.pi)))*np.ones(np.size(x))
+    f = (np.exp(-(x-mu)**2/(2*sigma**2)) / (sigma*np.sqrt(2*np.pi)))*np.ones(np.size(x))
+    #   (np.exp(-(x-mu)**2 /(2*sigma**2)) / (sigma*np.sqrt(2*np.pi)))*np.ones(np.size(x))
     return f
 
 def gaussian(mu,sig,z):
@@ -124,7 +125,7 @@ mu_y=np.mean(y)
 sig_y=np.std(y)
 print ("Exponential")
 print ("Mean: " + str(mu_y) + "\nStandard deviation: " + str(sig_y))
-
+"""
 ##################################################################
 ### Part 1.3 - Normal Random Variable (mu = 2.5, sigma = 0.75) ###
 ##################################################################
@@ -166,7 +167,7 @@ mu_z=np.mean(z)
 sig_z=np.std(z)
 print ("Normal")
 print ("Mean: " + str(mu_z) + "\nStandard deviation: " + str(sig_z))
-
+"""
 
 #############################################################
 ### 2. The Central Limit Theorem (a = 2.0 cm, b = 5.0 cm) ###
@@ -209,10 +210,12 @@ plt.xlabel('Stack width in n = ' + str(nbooks) +  ' books',fontsize=14)
 plt.ylabel('Probability',fontsize=14)
 
 #PLOT THE GAUSSIAN FUNCTION
+#           value, value, histogram
 f=gaussian(mu_x*nbooks,sig_x*np.sqrt(nbooks),b1)
+
 plt.plot(b1,f,'r')
 plt.show()
-"""
+
 
 ################################################################################
 ### 3. Distribution of the Sum of Exponential RVs                            ###
@@ -225,8 +228,6 @@ repeatCount = 10000
 Y1 = 3
 Y2 = 2
 Y3 = 4
-mu = beta
-sigma = beta
 batteryLog = np.zeros((repeatCount, 1))
 
 for index in range (0,repeatCount):
@@ -234,10 +235,13 @@ for index in range (0,repeatCount):
     carton = np.random.exponential(beta, n)
     batteryLog[index] = (sum(carton)/365)
 
+mu = np.mean(batteryLog)
+sigma = np.std(batteryLog)
+print ("Calculations Done")
 # Create bins and histogram
 nbins=30 # Number of bins
 edgecolor='w' # Color separating bars in the bargraph
-bins=[float(a) for a in np.linspace(0, nbins+1)]
+bins=[float(a) for a in np.linspace(1,7,nbins+1)]
 h1, bin_edges = np.histogram(batteryLog,bins,density=True)
 
 # Define points on the horizontal axis
@@ -250,13 +254,20 @@ plt.close('all')
 # PLOT THE BAR GRAPH
 fig1=plt.figure(1)
 plt.bar(b1,h1, width=barwidth, edgecolor=edgecolor)
-plt.title('Central Limit Theorom: PDF - Experiment Results',fontsize=14,fontweight='bold')
-#plt.xlabel('Stack width in n = ' + str(nbooks) +  ' books',fontsize=14)
+plt.title('Distribution of the Sum of Exponential RVs: PDF - Experiment Results',fontsize=14,fontweight='bold')
+plt.xlabel('Battery Package Life (years)',fontsize=14)
 plt.ylabel('Probability',fontsize=14)
 
 #PLOT THE GAUSSIAN FUNCTION
-f=BatteryPDF(beta, n, batteryLog)
+f=gaussian(mu, sigma, b1)
 plt.plot(b1,f,'r')
 plt.show()
+plt.close('all')
+#CDF
+valueSum = np.cumsum(h1* barwidth)
 
+plt.bar(b1,valueSum, width=barwidth, edgecolor=edgecolor)
+plt.plot(b1,valueSum, 'r' )
+plt.show()
 
+"""
