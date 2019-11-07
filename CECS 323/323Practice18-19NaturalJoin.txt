@@ -1,0 +1,9 @@
+SELECT * FROM orders 
+    NATURAL JOIN orderDetails 
+    WHERE orderNumber = 10270 
+        or orderNumber = 10272 
+        or orderNumber = 10279; 
+
+SELECT DISTINCT productLine, productVendor FROM productLines
+    NATURAL JOIN products;
+    

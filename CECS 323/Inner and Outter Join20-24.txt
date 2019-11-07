@@ -1,0 +1,24 @@
+-- select customers that live in the same state as one of our offices (26)
+SELECT * FROM customers cust 
+    INNER JOIN offices ofc ON cust.state = ofc.state;
+
+--select customers that live in the same state as their employee representative works (26)
+SELECT * FROM customers cust 
+    INNER JOIN offices ofc ON cust.state = ofc.state 
+    INNER JOIN employees emp ON ofc.officecode = emp.officecode
+    WHERE cust.SALESREPEMPLOYEENUMBER = emp.EMPLOYEENUMBER;
+
+-- select customerName, orderDate, quantityOrdered, productLine, productName for all
+--orders made and shipped in 2015 (444)
+SELECT customerName, orderDate, quantityOrdered, productLine, productName FROM Orders ord
+    INNER JOIN customers cust ON ord.CUSTOMERNUMBER = cust.CUSTOMERNUMBER
+    INNER JOIN orderDetails orddt ON orddt.ORDERNUMBER = ord.ORDERNUMBER
+    INNER JOIN products prod ON orddt.PRODUCTCODE = prod.PRODUCTCODE
+    WHERE YEAR(shippedDate) = 2015;
+
+SELECT * FROM products prod
+    LEFT OUTER JOIN orderDetails orddt ON orddt.PRODUCTCODE = prod.PRODUCTCODE
+    WHERE orddt.PRODUCTCODE is null;
+
+SELECT * FROM customers cust
+    LEFT OUTER JOIN employees emp ON cust.SALESREPEMPLOYEENUMBER = emp.EMPLOYEENUMBER;
