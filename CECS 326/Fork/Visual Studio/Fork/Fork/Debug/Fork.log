@@ -1,2 +1,5 @@
 ﻿  Main.cpp
-  Fork.vcxproj -> C:\Users\Jonathan\Documents\GitHub\Fall-2019\CECS 326\Fork\Visual Studio\Fork\Debug\Fork.exe
+C:\Users\Jonathan\Documents\GitHub\Fall-2019\CECS 326\Fork\Visual Studio\Fork\Fork\Main.cpp(46): error C3861: 'fork': identifier not found
+C:\Users\Jonathan\Documents\GitHub\Fall-2019\CECS 326\Fork\Visual Studio\Fork\Fork\Main.cpp(50): error C2146: syntax error: missing ';' before identifier 'p'
+C:\Users\Jonathan\Documents\GitHub\Fall-2019\CECS 326\Fork\Visual Studio\Fork\Fork\Main.cpp(50): error C2065: 'p': undeclared identifier
+C:\Users\Jonathan\Documents\GitHub\Fall-2019\CECS 326\Fork\Visual Studio\Fork\Fork\Main.cpp(51): error C2143: syntax error: missing ';' before '}'
