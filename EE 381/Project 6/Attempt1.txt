@@ -1,0 +1,184 @@
+import numpy as np
+import math as m
+import matplotlib
+import matplotlib.pyplot as plt
+
+
+###################################
+### 1. Three-state Markov Chain ###
+###################################
+
+#This is used to randomly decide the next state based on a initial vector
+#Largely based on nSidedDie from previous labs
+
+def newStateIndex(stateArray):
+## stateArray - A numpy array representing state transition probabilities
+
+    #array length
+    totalStateCount = stateArray.size
+    #cumulative sum
+    stateCumSum = np.cumsum(stateArray)
+    stateOdds = np.append (0, stateCumSum)
+    #generate random value
+    randVal = np.random.rand()
+    #check which CumSum values it falls between
+    for state in range(0, totalStateCount):
+        if randVal > stateOdds[state] and randVal <= stateOdds[(state + 1)]:
+            print ("NSI CODE - " + str(int(state)))
+            return int(state)
+
+
+#This function takes in a state transition array and an initial
+#probabilty vector and gets the index of the next probability vector
+#in the state transition array randomly
+        
+def nextProbVectorIndex(initialProb):
+## initialProb - the initial probability vector as a numpy array
+
+    #Create lists for the states
+    #possible state indexes
+    stateIndexValues = []
+    #probabilities of possible states in the initial probability vector
+    posValueProbs = []
+    #converting the numpy array to a list
+    probList = initialProb.tolist()
+       
+    #Loop through the list find only the possible
+    #state transitions from the initialProb
+    for element in range(0, len(probList)):
+        if (probList[element] > 0):
+            #any positive values have their index added to the index list
+            stateIndexValues.append(element)
+            
+    #Loop through these obtained indexes to get their assosciated
+    #values into the list
+    for index in stateIndexValues:
+        SIV = stateIndexValues[index]
+        print ("SIV - " + str (SIV))
+        posValueProbs.append(probList[SIV])
+
+    #Generate a value from newStateIndex using posValueProbs
+    #newStateIndex will return the index of the probability it selected
+    #This value is used in newStateIndex to get the value
+    #that represents the next state
+    
+    print ("PVP - " + str (posValueProbs))
+    probArray = np.asarray(posValueProbs)
+    print ("PA - " + str(probArray))
+    NSI = newStateIndex(probArray)
+    print ("NSI - " + str(NSI))
+    NSIT = type (NSI)
+    print (NSIT)
+    RV = stateIndexValues[NSI]
+    print ("RV - " + str(RV))
+    RVT = type (RV)
+    
+    print ("Types" + str(NSIT) + "/" + str(RV))
+    return RV
+    
+    
+    
+    
+def intToWeather (int):
+    if (int == 0):
+        return "Rain"
+    if (int == 1):
+        return "Nice"
+    if (int == 2):
+        return "Snow"
+    
+#This function takes a state transition array, and initial state
+#probability vector and step through the transitions randomly up as many
+#times as desired
+def StateStep (firstState, array, stepCount):
+## firstState - the initial state probability vector
+## array - the state transition array
+## stepCount - the number of steps to take through the  transition array
+
+    #Create a log to track each step result
+    stateLog = np.zeros((stepCount,1))
+    
+    stateProb = firstState
+
+    #Loop through to step through stepCount times
+    for i in range(0, stepCount):
+        newStateIndex = nextProbVectorIndex(stateProb)
+        stateLog[i] = newStateIndex
+        stateProb = array[newStateIndex]
+    return stateLog
+
+
+
+ 
+stepCount = 15
+experimentCount = 10000
+#print ("debug statement - ")
+weatherProbArray = np.array([  [ 0.33 , 0.33 , 0.33 ],
+                               [ 0.33 , 0.16 , 0.50 ],
+                               [ 0.40 , 0.20 , 0.40 ]])
+for index in range (0, 100):
+    print(StateStep(weatherProbArray[1], weatherProbArray, stepCount))
+""" 
+weatherProbArray = np.array([   [ 0.50 , 0.25 , 0.25 ],
+                                [ 0.50 , 0.00 , 0.50 ],
+                                [ 0.25 , 0.25 , 0.50 ]])
+
+
+
+
+########################################
+### 2. The Google PageRank Algorithm ###
+########################################
+                        # A      B      C      D      E 
+pageProbArray = np.array([  [ 0.00 , 1.00 , 0.00 , 0.00 , 0.00],  #A
+                            [ 0.50 , 0.00 , 0.50 , 0.00 , 0.00],  #B
+                            [ 0.33 , 0.33 , 0.00 , 0.00 , 0.33],  #C
+                            [ 1.00 , 0.00 , 0.00 , 0.00 , 0.00],  #D
+                            [ 0.00 , 0.33 , 0.33 , 0.33 , 0.00]])   #E
+
+
+
+##################################
+### 3. Absorbing Markov Chains ###
+##################################
+
+#--------------------------------------------#
+# A = 2/3[0.66] B = 3/5[0.60] C = 3/10[0.30] #
+#--------------------------------------------#
+
+#----------------------------------------#
+# 1-A = [0.34] 1-B = [0.40] 1-C = [0.70] #
+#----------------------------------------#
+
+                            #|       Q          |       R     |
+                            # 1      2      3      0      4          
+walkProbArray = np.array([  [ 0.00 , 0.34 , 0.00 , 0.66 , 0.00],  #1
+                            [ 0.60 , 0.00 , 0.40 , 0.00 , 0.00],  #2  
+                            [ 0.00 , 0.30 , 0.00 , 0.00 , 0.70],  #3 ____
+                            [ 0.00 , 0.00 , 0.00 , 1.00 , 0.00],  #0
+                            [ 0.00 , 0.00 , 0.00 , 0.00 , 1.00]]) #4
+                            #|       0          |       I     |
+
+##########################################################################
+### 4. Compute the probability of absorption using the simulated chain ###
+##########################################################################
+
+initialProbState = np.array ([[ 0.00 , 0.00 , 1.00 , 0.00 , 0.00 ]])
+
+
+
+"""
+
+
+
+
+
+
+
+
+\
+
+
+
+
+  
