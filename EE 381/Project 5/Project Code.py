@@ -138,8 +138,20 @@ def translatePos(intArg):
     if (intArg == 4):
         print("State - 4")
 
+def translateLog(intArg):
+    if (intArg == 0):
+        return 1
+    if (intArg == 1):
+        return 2
+    if (intArg == 2):
+        return 3
+    if (intArg == 3):
+        return 0
+    if (intArg == 4):
+        return 4
 
-        
+
+    
 ###################################
 ### 1. Three-state Markov Chain ###
 ###################################
@@ -397,25 +409,43 @@ walkProbArray = np.array([  [ 0.00 , 0.33 , 0.00 , 0.66 , 0.00],  #1
                             [ 0.00 , 0.00 , 0.00 , 0.00 , 1.00]]) #4
                             #|       0          |       I     |
 
+repetitionCount = 15
 ### ------------------------------------------------------------- ###
 
 
 #Generate the random state from which to start the walk
-randVal = random.randint(0,2)
+randVal = 1
 
 #Set the loop variable to the initial value determined by the randVal
 stateProb = walkProbArray[randVal]
 
-
+experimentLog = []
+translatePos(randVal)
 #Walk through the array up to 15 steps
-for count in range (0,15):
+for count in range (0,repetitionCount):
     #get new state index from the current probabilty vector
     nextIndex = drunkenWalkNextState(stateProb)
+    experimentLog.append(translateLog(nextIndex))
     #Display the new state
     translatePos(nextIndex)
     #Get the new probabilty vector from the new state index
     stateProb = walkProbArray[nextIndex]
 
+### ----------- Plot ----------- ###
+eLArray = np.array(experimentLog)
+
+plt.figure(1)
+x1=list(range(0,repetitionCount))
+y1= [0,1,2,3,4]
+plt.plot(x1,eLArray,'*:', label='Walk State')
+plt.xticks(x1)
+plt.yticks(y1)
+plt.title('Drunken Walk Absorbing State - Absorbed by 0')
+plt.xlabel('Step Count')
+plt.ylabel('State')
+plt.legend(loc='best')
+plt.show()
+### ---------------------------- ###
 
 
 
@@ -473,7 +503,6 @@ absorbedByFourProb = (experimentCount - experimentLog)/experimentCount
 print (absorbedByZeroProb)
 print (absorbedByFourProb)
 ### -------------------------------------------------- ###
-
 
 
 
